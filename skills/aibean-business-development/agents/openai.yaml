@@ -1,0 +1,3 @@
+interface:
+  display_name: "AiBean 业务开发"
+  short_description: "基于 AiBean 前后端源码开发业务页面、表单和 API"
