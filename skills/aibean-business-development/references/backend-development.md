@@ -21,6 +21,7 @@ aibean-biz-web/src/main/java/com/aibean/biz/web/business/<domain>/
 - 使用 MyBatis-Flex 实体、Mapper（`BaseMapper<T>`）和现有查询方式。主键、时间字段、字段注释与数据库列名要明确映射。
 - 用户明确确认的全新业务表：实体可使用 `@AutoTable`、`@AutoColumn`、`@Table`、`@Id` / `@PrimaryKey` 等现有写法，由用户重启 Biz API 执行 AutoTable 建表。
 - 已有表或流程绑定表：只使用 `@Table` / `@Column` 等映射，禁止 `@AutoTable`，禁止用 Java 实体影响其结构。
+- 流程表映射中，`itemid` 映射为 `Long` 且是唯一的 `@Id` / 主键；`taskid` 映射为 `Long` 普通字段，由流程引擎维护。禁止复合主键、禁止将 `taskid` 标为主键，也不要在业务 CRUD 中赋写 `taskid`。
 - 当前应用配置可能设置 `auto-table.mode: update` 与 `auto-drop-column: true`。删除或收窄 AutoTable 字段可能损坏数据；除非用户对具体字段和影响明确确认，不得做此类变更。
 
 ## 设计准则

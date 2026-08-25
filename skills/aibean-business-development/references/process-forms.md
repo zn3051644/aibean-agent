@@ -4,11 +4,11 @@
 
 本地源码开发只直接读写前端仓库：
 
-```text
+~~~text
 public/form/forms/<relative-path>.vue
-```
+~~~
 
-不要调用 `bapi/form/file/save`。`src/views/form/formvue/vform.vue` 在本地模式会按表单相对路径动态加载该文件；交付时报告的路径不带 `.vue` 后缀，例如 `expense/ExpenseApply`。
+不要调用 `bapi/form/file/save`。`src/views/form/formvue/vform.vue` 在本地模式会按表单相对路径动态加载该文件；表单路径不带 `.vue` 后缀，例如 `expense/ExpenseApply`。
 
 ## 创建方式
 
@@ -21,5 +21,10 @@ public/form/forms/<relative-path>.vue
 - 具体表单通过 `defineModel('formData')` 接收数据，并接收 `formSchema` 与可选 `formContext`。
 - 主表字段使用 `formData.<tableName>.<fieldName>` 和 `formSchema.<tableName>.<fieldName>`；显示条件保留 `readable`，组件会基于 `writeable` 控制禁用状态。
 - 明细表使用 `yd-table`、对应数组 `formData.<tableName>` 与 `formCore.Grid`；主键、`RelationRowGuid` 和 `RelationParentRowGuid` 的关系不可删除或自行重命名。
+- 流程表固定字段 `itemid` 和 `taskid` 均为 `long`：保留 `itemid` 的唯一主键语义；`taskid` 由引擎写入，表单不提供可编辑控件或自行赋值。字段需要展示时只能只读展示。
 - 校验写在 `el-form-item` 的 `prop` 与规则中，名称必须与实际表/字段完全一致。
 - 如果表单实现了额外业务校验，可通过 `defineExpose({ validateForm })` 让运行壳调用。不要重写运行壳的流程提交、审批记录或任务处理能力。
+
+## 默认表单绑定
+
+本地表单文件和相对路径核对完成后，流程默认表单可通过 Server API 自动绑定；不要调用表单文件管理接口，也不要求用户手工到流程设计器设置路径。调用前必须展示 `POST /api/process/default-form/update` 的完整请求体并得到用户对本次写入的确认。详情见 [流程绑定配置](process-bindings.md)。

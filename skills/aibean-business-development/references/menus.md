@@ -2,6 +2,8 @@
 
 菜单由 Biz API 持久化，前端通过 `bapi/menu/routes` 获取动态路由。
 
+所有菜单 API 都需要当前会话认证。调用前遵循 [临时 API 认证](authentication.md)；认证失败时不重试写入，也不尝试绕过菜单 API。
+
 ## 安全写入流程
 
 1. 先调用 `GET /bapi/menu/admin/tree`（需要时带 `groupCode`）读取当前结构。
